@@ -7,23 +7,33 @@ import (
 )
 
 func main() {
-	// Lê o parâmetro da linha de comando
+	// Lê os parâmetros da linha de comando
 	args := os.Args[1:]
 	if len(args) == 0 {
-		fmt.Println("Por favor, forneça um parâmetro.")
+		fmt.Println("Por favor, forneça pelo menos um parâmetro.")
 		return
 	}
-	parametro := args[0]
+
+	// Defina os sufixos padrão
+	sufixoP := ""
+	sufixoHTTP := ""
+
+	// Verifica os parâmetros e configura os sufixos correspondentes
+	for i := 0; i < len(args); i++ {
+		if args[i] == "-p" && i+1 < len(args) {
+			sufixoP = args[i+1]
+		} else if args[i] == "-http" {
+			sufixoHTTP = "https://"
+		}
+	}
 
 	// Lê os valores da lista via pipeline
 	scanner := bufio.NewScanner(os.Stdin)
 	for scanner.Scan() {
 		valor := scanner.Text()
 
-		// Verifica se o parâmetro é "-http" e adiciona "https://" ao valor
-		if parametro == "-http" {
-			valor = "https://" + valor
-		}
+		// Aplica as modificações correspondentes
+		valor = sufixoHTTP + valor + sufixoP
 
 		resultado := valor
 		fmt.Println(resultado)
