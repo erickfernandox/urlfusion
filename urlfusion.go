@@ -19,7 +19,13 @@ func main() {
 	scanner := bufio.NewScanner(os.Stdin)
 	for scanner.Scan() {
 		valor := scanner.Text()
-		resultado := valor + parametro
+
+		// Verifica se o parâmetro é "-http" e adiciona "https://" ao valor
+		if parametro == "-http" {
+			valor = "https://" + valor
+		}
+
+		resultado := valor
 		fmt.Println(resultado)
 	}
 
